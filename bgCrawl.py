@@ -15,6 +15,7 @@ pattern = r'"program_url":"(.*?)"'
 all_programs = re.findall(pattern, html.unescape(response.text))
 print(all_programs)
 dead_programs = []
+stats_param = 100
 
 def checkUserRank(href_value):
      user_url = base_url + href_value
@@ -24,7 +25,7 @@ def checkUserRank(href_value):
         stats = re.findall(stat_pattern, html.unescape(user_response.text))
         print(stats, href_value)
         # making 0 as high end user and 1 as low end one
-        if len(stats) > 0 and int(stats[0]) < 50:
+        if len(stats) > 0 and int(stats[0]) < stats_param:
             return 0
         else:
             return 1
