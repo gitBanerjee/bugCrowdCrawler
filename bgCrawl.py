@@ -44,7 +44,7 @@ for program in all_programs:
             time.sleep(time_param)
             decision_param = checkUserRank(href_value)
             if decision_param == 0:
-                print('Leaving program ' + program + ' as it has user ' + user + ' with a rank under 100.')
+                print('Leaving program ' + program + ' as it has a user ' + href_value.replace('/', '') + ' with a rank under 100.')
                 dead_programs.append(program)
                 break
     else:
