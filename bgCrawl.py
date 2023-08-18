@@ -8,14 +8,14 @@ import time
 base_url = 'https://bugcrowd.com'
 url = base_url + '/programs'
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0'}
-time_param = 0.5
+time_param = 0.3
+dead_programs = []
+stats_param = 100
 
 response = requests.get(url, headers=headers)
 pattern = r'"program_url":"(.*?)"'
 all_programs = re.findall(pattern, html.unescape(response.text))
 print(all_programs)
-dead_programs = []
-stats_param = 100
 
 def checkUserRank(href_value):
      user_url = base_url + href_value
@@ -23,7 +23,6 @@ def checkUserRank(href_value):
      if response.status_code == 200:
         stat_pattern = r',"rank":"(\d+)'
         stats = re.findall(stat_pattern, html.unescape(user_response.text))
-        print(stats, href_value)
         # making 0 as high end user and 1 as low end one
         if len(stats) > 0 and int(stats[0]) < stats_param:
             return 0
@@ -45,6 +44,7 @@ for program in all_programs:
             time.sleep(time_param)
             decision_param = checkUserRank(href_value)
             if decision_param == 0:
+                print('Leaving program ' + program + ' as it has user ' + user + ' with a rank under 100.')
                 dead_programs.append(program)
                 break
     else:
